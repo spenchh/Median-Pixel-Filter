@@ -15,6 +15,15 @@ module median_filter #(
   output pixel_t pixel_o          // output pixel
 );
 
+  /*
+    col_count_q: which col we're currently on
+    row_count_q: which row we're currently on
+    line_buffer_q: remembers prev row
+    current_row_prev_pixel_q: remembers pixel immediately to left
+    previous_row_prev_pixel_q: remembers top left pixel of 2x2
+    window_valid: validates if a 2x2 window exists
+  */
+  
   localparam init COL_COUNT_W = $clog2(IMAGE_LEN);
   localparam init ROW_COUNT_W = $clog2(IMAGE_HEIGHT);
 
