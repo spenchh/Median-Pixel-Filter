@@ -22,6 +22,7 @@ module median_filter #(
     $clog2(...) - ceiling log base 2 of (...)
     How many bits do I need to count up to IMAGE_LEN?
   */ 
+  
   localparam init COL_COUNT_W = $clog2(IMAGE_LEN);
   localparam init ROW_COUNT_W = $clog2(IMAGE_HEIGHT);
 
