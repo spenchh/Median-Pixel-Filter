@@ -5,6 +5,8 @@ The median pixel filter applies a 2x2 kernel kernel to an image of IMAGE_LEN and
 
 Build your module assuming a streaming design, where pixels are given starting from the top left corner, moving left -> right. When you hit the right edge, the next incoming pixel is the left most edge of the row below.
 
+<img width="912" height="432" alt="image" src="https://github.com/user-attachments/assets/b410afd0-ccfd-409a-aec4-1458d916d605" />
+
 ## Input Pixel Stream
 The convolution will start in the top left corner of the image. It then moves one pixel to the right until it reaches the right edge of the image. The filter will then drop down a row and move all the way to the left edge. This will continue until the filter passes over every pixel in the image. 
 
