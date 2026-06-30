@@ -46,20 +46,6 @@ P00  P01
 P10  P11
 ```
 
-## Output Size
-
-For an input image of size:
-
-```text
-IMAGE_LEN x IMAGE_HEIGHT
-```
-
-the output image size is:
-
-```text
-(IMAGE_LEN - 1) x (IMAGE_HEIGHT - 1)
-```
-
 For example, a `3x3` input image produces a `2x2` output image.
 
 ## Module Interface
