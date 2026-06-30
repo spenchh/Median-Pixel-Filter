@@ -15,8 +15,6 @@ module median_filter #(
   output pixel_t pixel_o          // output pixel
 );
 
-  
-
   /* 
     localparam is a constant. Can't change from outside.
     Basically means COL_COUNT_W is num bits needed to count cols
