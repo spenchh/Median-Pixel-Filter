@@ -23,8 +23,12 @@ module median_filter #(
     How many bits do I need to count up to IMAGE_LEN?
   */ 
   
-  localparam init COL_COUNT_W = $clog2(IMAGE_LEN);
-  localparam init ROW_COUNT_W = $clog2(IMAGE_HEIGHT);
+  localparam int COL_COUNT_W = $clog2(IMAGE_LEN);
+  localparam int ROW_COUNT_W = $clog2(IMAGE_HEIGHT);
+
+  // Last valid col & row index
+  localparam int LAST_COL = IMAGE_LEN - 1;
+  localparam int LAST_ROW = IMAGE_HEIGHT - 1;
 
   /*
     col_count_q: which col we're currently on
@@ -49,11 +53,57 @@ module median_filter #(
   logic pixel_valid_d, pixel_valid_q;
   logic done_d, done_q;
 
-  logic window_valid
+  logic window_valid;
 
-  assign pixel_o = pixel_q;
-  assign pixel_valid_o = pixeL-valid_q;
-  assign done_o = done_q;
+  // Drive module outputs from saved output reg
+  assign pixel_o       = pixel_q;
+  assign pixel_valid_o = pixel_valid_q;
+  assign done_o        = done_q;
 
+  /*
+    Decide what next row/col should be
+    Doesn't save anything
+    Only calculates _d values from current _q values
+  */
+  always_comb begin
+    // Default: holds current row/col if nothing happens
+    col_count_d = col_count_q;
+    row_count_d = row_count_q;
+
+    // start_i begins a new frame so go back to the first pixel
+    if (start_i) begin
+      col_count_d = '0;
+      row_count_d = '0;
+
+    // Only move to the next pixel when input pixel is valid
+    end else if (pixel_valid_i) begin
+
+      // If at edge of image wrap back to col 0 and move down 1 row
+      if (col_count_q == LAST_COL) begin
+        col_count_d = '0;
+        row_count_d = row_count_q + 1'b1;
+
+      // Otherwise move one col to right
+      end else begin
+        col_count_d = col_count_q + 1'b1;
+      end
+    end
+  end
+
+  /*
+    Saves next col/row values on rising edge of clk
+    Reset is synchronous so checked inside clocked block
+  */
+  always_ff @(posedge clk) begin
+    if (rst) begin
+      col_count_q <= '0;
+      row_count_q <= '1;
+    end else begin
+      col_count_q <= col_count_d;
+      row_count_q <= row_count_d;
+    end
+  end
   
+
+    
 endmodule
